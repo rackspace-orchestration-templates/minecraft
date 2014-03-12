@@ -1,0 +1,136 @@
+heat_template_version: 2013-05-23
+
+description: |
+  This is a Heat template to deploy a single Linux server running a Minecraft
+  server.  The Mincraft server will be setup leveraging Chef solo.
+
+parameters:
+
+  server_hostname:
+    description: Server Name
+    type: string
+    default: minecraft
+    constraints:
+    - length:
+        min: 1
+        max: 64
+    - allowed_pattern: "^[a-zA-Z][a-zA-Z0-9-]*$"
+      description: |
+        Must begin with a letter and contain only alphanumeric characters.
+
+  image:
+    description: Server Image
+    type: string
+    default: Ubuntu 12.04 LTS (Precise Pangolin)
+    constraints:
+    - allowed_values:
+      - Ubuntu 12.04 LTS (Precise Pangolin)
+      description: Must be a supported operating system.
+
+  flavor:
+    description: Rackspace Cloud Server flavor
+    type: string
+    default: 4 GB Performance
+    constraints:
+    - allowed_values:
+      - 1 GB Performance
+      - 2 GB Performance
+      - 4 GB Performance
+      - 8 GB Performance
+      - 15 GB Performance
+      - 30 GB Performance
+      - 512MB Standard Instance
+      - 1GB Standard Instance
+      - 2GB Standard Instance
+      - 4GB Standard Instance
+      - 8GB Standard Instance
+      - 15GB Standard Instance
+      - 30GB Standard Instance
+      description: |
+        Must be a valid Rackspace Cloud Server flavor for the region you have
+        selected to deploy into.
+
+  ssh_keypair_name:
+    description: Nova keypair name for ssh access to the server
+    type: string
+    constraints:
+    - allowed_pattern: "^(.){1,64}$"
+      description: "Must be shorter than 64 characters or fewer."
+
+  minecraft_server_port:
+    description: Port to run Minecraft server on
+    type: number
+    default: 25565
+    constraints:
+    - range:
+        min: 1024
+        max: 65535
+      description: |
+        Port must be an unprivileged port in the range of 1024-65535
+
+
+resources:
+
+  ssh_key:
+    type: "OS::Nova::KeyPair"
+    properties:
+      name: { get_param: ssh_keypair_name }
+      save_private_key: true
+
+  minecraft_server:
+    type: "Rackspace::Cloud::Server"
+    properties:
+      name: { get_param: server_hostname }
+      flavor: { get_param: flavor }
+      image: { get_param: image }
+      key_name: { get_resource: ssh_key }
+
+  minecraft_setup:
+    type: "OS::Heat::ChefSolo"
+    depends_on: minecraft_server
+    properties:
+      username: root
+      private_key: { get_attr: [ssh_key, private_key] }
+      host: { get_attr: [minecraft_server, accessIPv4] }
+      Berksfile: |
+        site :opscode
+
+        cookbook 'apt',
+          :git => 'https://github.com/opscode-cookbooks/apt',
+          :ref => '8ef28bceaa6a9eded47e640d26df4a6f3a80320c'
+        cookbook 'build-essential',
+          :git => 'https://github.com/opscode-cookbooks/build-essential',
+          :ref => 'c1f1166bcd20ac4b3dbda518a794936ac4401d7f'
+        cookbook 'firewall',
+          :git => 'https://github.com/opscode-cookbooks/firewall',
+          :ref => 'c40369867a554cce87a09fd9abdced7f6f96dba5'
+        cookbook 'minecraft',
+          :git => 'https://github.com/hhoover/cookbook-minecraft',
+          :ref => 'e8d8cbc415cf4d0d17ab946e3299bdb9109e4614'
+        cookbook 'rax-minecraft',
+          :git => 'https://github.com/brint/rax-minecraft-cookbook',
+          :ref => '3b6f373bfb052bb5afd2c9af67b4033175d579bb'
+      node:
+        minecraft:
+          properties:
+            server-port: { get_param: minecraft_server_port }
+            query.port: { get_param: minecraft_server_port }
+            rcon.port: 25575
+        rax:
+          minecraft:
+            ports: [ { get_param: minecraft_server_port } ]
+        run_list: ["recipe[apt]",
+                   "recipe[build-essential]",
+                   "recipe[minecraft]",
+                   "recipe[rax-minecraft::firewall]"]
+
+
+outputs:
+  private_key:
+    value: { get_attr: [ssh_key, private_key] }
+
+  server_ip:
+    value: { get_attr: [minecraft_server, accessIPv4] }
+
+  server_port:
+    value: { get_param: minecraft_server_port }

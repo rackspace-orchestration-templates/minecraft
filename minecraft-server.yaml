@@ -105,8 +105,8 @@ resources:
           :git => 'https://github.com/opscode-cookbooks/firewall',
           :ref => 'c40369867a554cce87a09fd9abdced7f6f96dba5'
         cookbook 'minecraft',
-          :git => 'https://github.com/hhoover/cookbook-minecraft',
-          :ref => 'e8d8cbc415cf4d0d17ab946e3299bdb9109e4614'
+          :git => 'https://github.com/gregf/cookbook-minecraft',
+          :ref => '7614e7c819296febfdfbe4cec70656224519b8c6'
         cookbook 'rax-minecraft',
           :git => 'https://github.com/brint/rax-minecraft-cookbook',
           :ref => '3b6f373bfb052bb5afd2c9af67b4033175d579bb'

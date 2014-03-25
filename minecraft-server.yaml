@@ -39,7 +39,6 @@ parameters:
       - 8 GB Performance
       - 15 GB Performance
       - 30 GB Performance
-      - 512MB Standard Instance
       - 1GB Standard Instance
       - 2GB Standard Instance
       - 4GB Standard Instance

@@ -58,6 +58,11 @@ the `-P` flag to specify a custom parameter.
 * `ssh_keypair_name`: Name of the SSH key pair to register with nova (Default:
   none)
 * `minecraft_server_port`: Port to run the Minecraft server on (Default: 25565)
+* `minecraft_gamemode`: 0-3: Survival, Creative, Adventure, or Spectator (Default: 0)
+* `minecraft_spawn_animals`: Spawn animals (Default: true)
+* `minecraft_spawn_npcs`: Spawn villagers (Default: true)
+* `minecraft_spawn_monsters`: Spawn monsters (Default: true)
+
 
 Outputs
 =======

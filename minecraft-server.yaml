@@ -67,6 +67,43 @@ parameters:
       description: |
         Port must be an unprivileged port in the range of 1024-65535
 
+  minecraft_gamemode:
+    description: Mode of gameplay
+    type: number
+    default: 0
+    constraints:
+    - range:
+        min: 0
+        max: 3
+      description: |
+        0: Survival, 1: Creative, 2: Adventure, 3: Spectator
+
+  minecraft_spawn_animals:
+    description: Spawn animals
+    type: string
+    default: true
+    constraints:
+    - allowed_values:
+      - true
+      - false
+
+  minecraft_spawn_npcs:
+    description: Spawn villagers
+    type: string
+    default: true
+    constraints:
+    - allowed_values:
+      - true
+      - false
+
+  minecraft_spawn_monsters:
+    description: Spawn monsters
+    type: string
+    default: true
+    constraints:
+    - allowed_values:
+      - true
+      - false
 
 resources:
 
@@ -105,7 +142,7 @@ resources:
           :ref => 'c40369867a554cce87a09fd9abdced7f6f96dba5'
         cookbook 'minecraft',
           :git => 'https://github.com/gregf/cookbook-minecraft',
-          :ref => '7614e7c819296febfdfbe4cec70656224519b8c6'
+          :ref => 'f904e05d17767fc35994eff92c280c6c92c99329'
         cookbook 'rax-minecraft',
           :git => 'https://github.com/brint/rax-minecraft-cookbook',
           :ref => '3b6f373bfb052bb5afd2c9af67b4033175d579bb'
@@ -115,6 +152,10 @@ resources:
             server-port: { get_param: minecraft_server_port }
             query.port: { get_param: minecraft_server_port }
             rcon.port: 25575
+            gamemode: { get_param: minecraft_gamemode }
+            spawn-animals: { get_param: minecraft_spawn_animals }
+            spawn-npcs: { get_param: minecraft_spawn_npcs }
+            spawn-monsters: { get_param: minecraft_spawn_monsters }
         rax:
           minecraft:
             ports: [ { get_param: minecraft_server_port } ]

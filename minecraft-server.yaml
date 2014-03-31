@@ -4,6 +4,19 @@ description: |
   This is a Heat template to deploy a single Linux server running a Minecraft
   server.  The Mincraft server will be setup leveraging Chef solo.
 
+parameter_groups:
+
+- label: Server Settings
+  parameters:
+  - server_hostname
+  - image
+  - flavor
+  - ssh_keypair_name
+
+- label: Minecraft Settings
+  parameters:
+  - minecraft_server_port
+
 parameters:
 
   server_hostname:

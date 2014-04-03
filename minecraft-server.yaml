@@ -155,7 +155,7 @@ resources:
           :ref => 'c40369867a554cce87a09fd9abdced7f6f96dba5'
         cookbook 'minecraft',
           :git => 'https://github.com/gregf/cookbook-minecraft',
-          :ref => 'f904e05d17767fc35994eff92c280c6c92c99329'
+          :ref => 'b8eb9fa97d534af31ba5d29d6781b9f3c6c7e522'
         cookbook 'rax-minecraft',
           :git => 'https://github.com/brint/rax-minecraft-cookbook',
           :ref => '3b6f373bfb052bb5afd2c9af67b4033175d579bb'

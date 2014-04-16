@@ -170,6 +170,8 @@ resources:
           :ref => '3b6f373bfb052bb5afd2c9af67b4033175d579bb'
       node:
         minecraft:
+          url: https://s3.amazonaws.com/Minecraft.Download/versions/1.7.9/minecraft_server.1.7.9.jar
+          checksum: f7b9150d05c2cf8c48541527de310557e6bd9bde73e8ac9479e8ffe722c60a21
           properties:
             server-port: { get_param: minecraft_server_port }
             query.port: { get_param: minecraft_server_port }

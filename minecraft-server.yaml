@@ -130,7 +130,7 @@ parameters:
   kitchen:
     description: URL for the kitchen to use
     type: string
-    default: https://github.com/rackspace-orchestration-templates/vestacp
+    default: https://github.com/rackspace-orchestration-templates/minecraft
 
   chef_version:
     description: Version of chef client to use

@@ -62,6 +62,11 @@ the `-P` flag to specify a custom parameter.
 * `minecraft_spawn_animals`: Spawn animals (Default: true)
 * `minecraft_spawn_npcs`: Spawn villagers (Default: true)
 * `minecraft_spawn_monsters`: Spawn monsters (Default: true)
+* `kitchen`: URL for the kitchen to clone with git. The Chef Solo run will copy
+  all files in this repo into the kitchen for the chef run. (Default:
+  https://github.com/rackspace-orchestration-templates/minecraft)
+* `chef_version`: Chef client version to install for the chef run.  (Default:
+  11.12.2)
 
 
 Outputs

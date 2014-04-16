@@ -1,0 +1,5 @@
+# Minecraft server properties
+
+<% node['minecraft']['properties'].each do |key, value| -%>
+<%= "#{key}=#{value}" %>
+<% end -%>

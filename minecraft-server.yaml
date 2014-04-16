@@ -127,6 +127,16 @@ parameters:
       - true
       - false
 
+  kitchen:
+    description: URL for the kitchen to use
+    type: string
+    default: https://github.com/rackspace-orchestration-templates/vestacp
+
+  chef_version:
+    description: Version of chef client to use
+    type: string
+    default: 11.12.2
+
 resources:
 
   ssh_key:
@@ -150,24 +160,8 @@ resources:
       username: root
       private_key: { get_attr: [ssh_key, private_key] }
       host: { get_attr: [minecraft_server, accessIPv4] }
-      Berksfile: |
-        site :opscode
-
-        cookbook 'apt',
-          :git => 'https://github.com/opscode-cookbooks/apt',
-          :ref => '8ef28bceaa6a9eded47e640d26df4a6f3a80320c'
-        cookbook 'build-essential',
-          :git => 'https://github.com/opscode-cookbooks/build-essential',
-          :ref => 'c1f1166bcd20ac4b3dbda518a794936ac4401d7f'
-        cookbook 'firewall',
-          :git => 'https://github.com/opscode-cookbooks/firewall',
-          :ref => 'c40369867a554cce87a09fd9abdced7f6f96dba5'
-        cookbook 'minecraft',
-          :git => 'https://github.com/gregf/cookbook-minecraft',
-          :ref => 'b8eb9fa97d534af31ba5d29d6781b9f3c6c7e522'
-        cookbook 'rax-minecraft',
-          :git => 'https://github.com/brint/rax-minecraft-cookbook',
-          :ref => '3b6f373bfb052bb5afd2c9af67b4033175d579bb'
+      kitchen: { get_param: kitchen }
+      chef_version: { get_param: chef_version }
       node:
         minecraft:
           url: https://s3.amazonaws.com/Minecraft.Download/versions/1.7.9/minecraft_server.1.7.9.jar

@@ -1,9 +1,8 @@
-# coding: utf-8
 #
-# Cookbook Name:: rax-minecraft
-# Attributes:: default
+# Cookbook Name:: build-essential
+# Recipe:: freebsd
 #
-# Copyright 2014
+# Copyright 2014, Chef Software, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,4 +17,8 @@
 # limitations under the License.
 #
 
-default['rax']['minecraft']['ports'] = nil
+potentially_at_compile_time do
+  package 'gmake'
+  package 'autoconf'
+  package 'm4'
+end

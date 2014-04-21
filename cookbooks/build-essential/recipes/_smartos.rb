@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: build-essential
-# Recipe:: rhel
+# Recipe:: smartos
 #
 # Copyright 2008-2013, Opscode, Inc.
 #
@@ -17,23 +17,11 @@
 # limitations under the License.
 #
 
-pkgs = %w{
-  autoconf
-  bison
-  flex
-  gcc
-  gcc-c++
-  kernel-devel
-  make
-  m4
-}
-
-# ensure GCC 4 is available on older pre-6 EL
-pkgs.unshift %w{ gcc44 gcc44-c++ } if node['platform_version'].to_i < 6
-
-pkgs.flatten.each do |pkg|
-  r = package pkg do
-    action(node['build_essential']['compiletime'] ? :nothing : :install)
-  end
-  r.run_action(:install) if node['build_essential']['compiletime']
+potentially_at_compile_time do
+  package 'autoconf'
+  package 'binutils'
+  package 'build-essential'
+  package 'gcc47'
+  package 'gmake'
+  package 'pkg-config'
 end

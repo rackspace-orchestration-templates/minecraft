@@ -177,12 +177,11 @@ resources:
             spawn-npcs: { get_param: minecraft_spawn_npcs }
             spawn-monsters: { get_param: minecraft_spawn_monsters }
         rax:
-          minecraft:
-            ports: [ { get_param: minecraft_server_port } ]
+          firewall:
+            tcp: [ { get_param: minecraft_server_port } ]
         run_list: ["recipe[apt]",
-                   "recipe[build-essential]",
                    "recipe[minecraft]",
-                   "recipe[rax-minecraft::firewall]"]
+                   "recipe[rax-firewall]"]
 
 
 outputs:

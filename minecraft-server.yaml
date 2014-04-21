@@ -36,10 +36,12 @@ parameters:
     label: Server Image
     description: Operating system to use for the Minecraft Server
     type: string
-    default: Ubuntu 12.04 LTS (Precise Pangolin)
+    default: Ubuntu 14.04 LTS (Trusty Tahr)
     constraints:
     - allowed_values:
       - Ubuntu 12.04 LTS (Precise Pangolin)
+      - Ubuntu 14.04 LTS (Trusty Tahr)
+      - Ubuntu 14.04 LTS (Trusty Tahr) (PVHVM)
       description: Must be a supported operating system.
 
   flavor:

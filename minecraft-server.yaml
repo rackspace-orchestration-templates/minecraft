@@ -103,31 +103,31 @@ parameters:
     label: Spawn Animals
     description: Spawn animals
     type: string
-    default: true
+    default: "true"
     constraints:
     - allowed_values:
-      - true
-      - false
+      - "true"
+      - "false"
 
   minecraft_spawn_npcs:
     label: Spawn Villagers
     description: Spawn villagers
     type: string
-    default: true
+    default: "true"
     constraints:
     - allowed_values:
-      - true
-      - false
+      - "true"
+      - "false"
 
   minecraft_spawn_monsters:
     label: Spawn Monsters
     description: Spawn monsters
     type: string
-    default: true
+    default: "true"
     constraints:
     - allowed_values:
-      - true
-      - false
+      - "true"
+      - "false"
 
   kitchen:
     description: URL for the kitchen to use

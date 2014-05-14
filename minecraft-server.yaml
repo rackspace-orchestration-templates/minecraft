@@ -16,11 +16,10 @@ parameter_groups:
 - label: Minecraft Settings
   parameters:
   - minecraft_server_port
-
-- label: Chef Settings
-  parameters:
-  - kitchen
-  - chef_version
+  - minecraft_gamemode
+  - minecraft_spawn_animals
+  - minecraft_spawn_npcs
+  - minecraft_spawn_monsters
 
 parameters:
 

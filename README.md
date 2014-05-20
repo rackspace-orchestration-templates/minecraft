@@ -30,7 +30,7 @@ Here is an example of how to deploy this template using the
 heat --os-username <OS-USERNAME> --os-password <OS-PASSWORD> --os-tenant-id \
   <TENANT-ID> --os-auth-url https://identity.api.rackspacecloud.com/v2.0/ \
   stack-create Minecraft-Stack -f minecraft-server.yaml \
-  -P server_hostname=MineStack -P ssh_keypair_name=mine-example
+  -P server_hostname=MineStack
 ```
 
 * For UK customers, use `https://lon.identity.api.rackspacecloud.com/v2.0/` as
@@ -55,8 +55,6 @@ the `-P` flag to specify a custom parameter.
 * `image`: Operating system to install (Default: Ubuntu 14.04 LTS (Trusty
   Tahr))
 * `flavor`: Cloud server size to use. (Default: 4 GB Performance)
-* `ssh_keypair_name`: Name of the SSH key pair to register with nova (Default:
-  none)
 * `minecraft_server_port`: Port to run the Minecraft server on (Default: 25565)
 * `minecraft_gamemode`: 0-3: Survival, Creative, Adventure, or Spectator (Default: 0)
 * `minecraft_spawn_animals`: Spawn animals (Default: true)

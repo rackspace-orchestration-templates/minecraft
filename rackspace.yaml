@@ -4,6 +4,10 @@ application-name: Minecraft
 application-version: 1.7.9
 flavor: Single Linux server running a Minecraft multiplayer server
 flavor-weight: 1
+abstract: |
+      A [Minecraft Multiplayer
+      Server](http://minecraft.gamepedia.com/Setting_up_a_server) running on a
+      single Linux Cloud Server.
 reach-info:
   icon-20x20: https://0b5294b243620310a700-e388a7f3aba385a925111b1fc6f680d4.ssl.cf2.rackcdn.com/minecraft-icon-20x20.png
   tattoo: https://0b5294b243620310a700-e388a7f3aba385a925111b1fc6f680d4.ssl.cf2.rackcdn.com/minecraft-tattoo.png

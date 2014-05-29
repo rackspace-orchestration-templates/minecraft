@@ -183,10 +183,13 @@ resources:
 
 outputs:
   private_key:
+    description: Private Key
     value: { get_attr: [ssh_key, private_key] }
 
   server_ip:
+    description: Server IP
     value: { get_attr: [minecraft_server, accessIPv4] }
 
   server_port:
+    description: Minecraft Port
     value: { get_param: minecraft_server_port }

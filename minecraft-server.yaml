@@ -8,7 +8,6 @@ parameter_groups:
 
 - label: Server Settings
   parameters:
-  - server_hostname
   - image
   - flavor
 
@@ -19,6 +18,12 @@ parameter_groups:
   - minecraft_spawn_animals
   - minecraft_spawn_npcs
   - minecraft_spawn_monsters
+
+- label: rax-dev-params
+  parameters:
+  - server_hostname
+  - kitchen
+  - chef_version
 
 parameters:
 
@@ -36,8 +41,10 @@ parameters:
         Must begin with a letter and contain only alphanumeric characters.
 
   image:
-    label: Server Image
-    description: Operating system to use for the Minecraft Server
+    label: Operating System
+    description: |
+      Server image used for all servers that are created as a part of this
+      deployment
     type: string
     default: Ubuntu 14.04 LTS (Trusty Tahr)
     constraints:
@@ -48,8 +55,10 @@ parameters:
       description: Must be a supported operating system.
 
   flavor:
-    label: Cloud Server flavor
-    description: Flavor of Cloud server to use
+    label: Server Size
+    description: |
+      Rackspace Cloud Server flavor to use. The size is based on the amount of
+      RAM for the provisioned server.
     type: string
     default: 4 GB Performance
     constraints:
@@ -134,7 +143,7 @@ parameters:
     label: Chef Version
     description: Version of chef client to use
     type: string
-    default: 11.12.2
+    default: 11.12.8
 
 resources:
 
@@ -151,6 +160,8 @@ resources:
       flavor: { get_param: flavor }
       image: { get_param: image }
       key_name: { get_resource: ssh_key }
+      metadata:
+        rax-heat: { get_param: "OS::stack_id" }
 
   minecraft_setup:
     type: "OS::Heat::ChefSolo"
@@ -183,7 +194,7 @@ resources:
 
 outputs:
   private_key:
-    description: Private Key
+    description: SSH Private Key
     value: { get_attr: [ssh_key, private_key] }
 
   server_ip:

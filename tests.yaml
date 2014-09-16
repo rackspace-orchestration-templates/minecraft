@@ -2,7 +2,7 @@ test-cases:
 - name: Default Build Test # Deploy using all default options
   create:
     parameters:
-      accept_eula: true
+      terms: true
     timeout: 30 # Deployment should complete in under 30 minutes
   resource_tests: # Tests to run on the resources themselves
     ssh_private_key: { get_output: private_key } # Fetch from output-list of stack

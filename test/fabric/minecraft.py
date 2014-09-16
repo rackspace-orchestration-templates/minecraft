@@ -7,8 +7,8 @@ from envassert import detect, file, group, package, port, process, service, \
 def check():
     env.platform_family = detect.detect()
 
-    assert file.exists('/srv/minecraft/minecraft_server.1.7.9.jar'), \
-        '/srv/minecraft/minecraft_server.1.7.9.jar does not exist'
+    assert file.exists('/srv/minecraft/minecraft_server.1.8.jar'), \
+        '/srv/minecraft/minecraft_server.1.8.jar does not exist'
 
     assert port.is_listening(25565), 'port 25565/java is not listening'
 

@@ -212,6 +212,7 @@ resources:
           firewall:
             tcp: [ { get_param: minecraft_server_port } ]
         run_list: ["recipe[apt]",
+                   "recipe[java::openjdk]",
                    "recipe[minecraft]",
                    "recipe[rax-firewall]"]
 

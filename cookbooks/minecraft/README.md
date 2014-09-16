@@ -1,4 +1,6 @@
-# Minecraft [![Build Status](https://secure.travis-ci.org/gregf/cookbook-minecraft.png)](http://travis-ci.org/gregf/cookbook-minecraft)
+# Minecraft
+[![Build Status](https://secure.travis-ci.org/gregf/cookbook-minecraft.png)](http://travis-ci.org/gregf/cookbook-minecraft)
+[![Cookbook Version](https://img.shields.io/cookbook/v/minecraft.svg)](https://community.opscode.com/cookbooks/minecraft)
 
 ## Description
 
@@ -84,6 +86,11 @@ The service recipe enables the runit service for minecraft.
 * `minecraft['ops']`
   - An array of admins, default blank
 
+* `minecraft['accept_eula']`
+  - Boolean whether to accept the EULA, required for [Minecraft 1.7.10](https://account.mojang.com/documents/minecraft_eula) (a Reddit thread with
+    more information [is here](http://www.reddit.com/r/admincraft/comments/27dy0q/1710_forces_you_to_accept_the_eula_before_you_can/)). The default
+    is false. It must be set to true (meaning you are consciously acknowledging and accepting the agreement) for the server to start.
+
 ### Properties
 
 You can can customize any of the settings from server.properties. They are kept up to date with upstream and you can read about each setting in more
@@ -104,7 +111,7 @@ This leaves you with two work arounds for now.
 
 I am hoping I can get this changed upstream. I will attempt to come up with a better work around in the mean time.
 
-##Contributing
+## Contributing
 
 1. Fork it
 2. Create your feature branch (git checkout -b my-new-feature)
@@ -112,10 +119,10 @@ I am hoping I can get this changed upstream. I will attempt to come up with a be
 4. Push to the branch (git push origin my-new-feature)
 5. Create new Pull Request
 
-##License
+## License
 
-Author: Greg Fitzgerald <greg@gregf.org>  
-Author: Sean Escriva <sean.escriva@gmail.com>  
+Author: Greg Fitzgerald <greg@gregf.org>
+Author: Sean Escriva <sean.escriva@gmail.com>
 
 Copyright 2013, Greg Fitzgerald.
 

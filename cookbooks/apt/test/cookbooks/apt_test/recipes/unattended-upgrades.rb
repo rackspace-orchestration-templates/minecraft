@@ -1,9 +1,8 @@
 #
-# Author:: Seth Chisamore (<schisamo@opscode.com>)
-# Cookbook Name:: java
-# Recipe:: default
+# Cookbook Name:: apt_test
+# Recipe:: unattended-upgrades
 #
-# Copyright 2008-2011, Opscode, Inc.
+# Copyright 2014, Opscode, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,11 +17,4 @@
 # limitations under the License.
 #
 
-if node['java']['install_flavor'] != 'windows'
-  if node['java']['jdk_version'].to_i == 8 and node['java']['install_flavor'] != 'oracle'
-    Chef::Application.fatal!("JDK 8 is currently only provided with the Oracle JDK")
-  end
-end
-
-include_recipe "java::set_attributes_from_version"
-include_recipe "java::#{node['java']['install_flavor']}"
+include_recipe 'apt::unattended-upgrades'

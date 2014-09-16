@@ -7,42 +7,46 @@ OpenJDK, but it can also install Oracle and IBM JDKs.
 Usage
 -----
 
-Simply include the `java` recipe wherever you would like Java installed, such as a run list (`recipe[java]`) or a cookbook (`include_recipe 'java'`). By default, OpenJDK 6 is installed. The `install_flavor` attribute is used to determine which JDK to install (OpenJDK, Oracle, IBM, or Windows), and `jdk_version` specifies which version to install (currently 6 and 7 are supported for all JDK types, 8 for Oracle only). 
+Simply include the `java` recipe wherever you would like Java installed, such as a run list (`recipe[java]`) or a cookbook (`include_recipe 'java'`). By default, OpenJDK 6 is installed. The `install_flavor` attribute is used to determine which JDK to install (OpenJDK, Oracle, IBM, or Windows), and `jdk_version` specifies which version to install (currently 6 and 7 are supported for all JDK types, 8 for Oracle only).
 
 ### Examples
 
 To install Oracle Java 7 (note that when installing Oracle JDK, `accept_oracle_download_terms` must be set -- see below for details):
-
-    name "java"
-    description "Install Oracle Java"
-    default_attributes(
-      "java" => {
-        "install_flavor" => "oracle",
-        "accept_oracle_download_terms" => true,
-        "jdk_version" => "7"
-      }
-    )
-    run_list(
-      "recipe[java]"
-    )
+```ruby
+name "java"
+description "Install Oracle Java"
+default_attributes(
+  "java" => {
+    "install_flavor" => "oracle",
+    "jdk_version" => "7",
+    "oracle" => {
+      "accept_oracle_download_terms" => true
+    }
+  }
+)
+run_list(
+  "recipe[java]"
+)
+```
 
 To install IBM flavored Java:
-
-    name "java"
-    description "Install IBM Java on Ubuntu"
-    default_attributes(
-      "java" => {
-        "install_flavor" => "ibm",
-        "ibm" => {
-          "accept_ibm_download_terms" => true,
-          "url" => "http://fileserver.example.com/ibm-java-x86_64-sdk-7.0-4.1.bin",
-          "checksum" => "The SHA256 checksum of the bin"
-        }
-      }
-    )
-    run_list(
-      "recipe[java]"
-    )
+```ruby
+name "java"
+description "Install IBM Java on Ubuntu"
+default_attributes(
+  "java" => {
+    "install_flavor" => "ibm",
+    "ibm" => {
+      "accept_ibm_download_terms" => true,
+      "url" => "http://fileserver.example.com/ibm-java-x86_64-sdk-7.0-4.1.bin",
+      "checksum" => "The SHA256 checksum of the bin"
+    }
+  }
+)
+run_list(
+  "recipe[java]"
+)
+```
 
 Requirements
 -----
@@ -64,12 +68,14 @@ Attributes
 See `attributes/default.rb` for default values.
 
 * `node['java']['install_flavor']` - Flavor of JVM you would like
-installed (`oracle`, `openjdk`, `ibm`, `windows`), default `openjdk`
+installed (`oracle`, `oracle_rpm`, `openjdk`, `ibm`, `windows`), default `openjdk`
 on Linux/Unix platforms, `windows` on Windows platforms.
 * `node['java']['jdk_version']` - JDK version to install, defaults to
   `'6'`.
 * `node['java']['java_home']` - Default location of the
   "`$JAVA_HOME`".
+* `node['java']['set_etc_environment']` - Optionally sets
+  JAVA_HOME in `/etc/environment` for  Default `false`.
 * `node['java']['openjdk_packages']` - Array of OpenJDK package names
   to install in the `java::openjdk` recipe. This is set based on the
   platform.
@@ -95,6 +101,13 @@ the .tar.gz.
   JDK/SDK. See the `ibm` recipe section below.
 * `node['java']['ibm']['accept_ibm_download_terms']` - Indicates that
   you accept IBM's EULA (for `java::ibm`)
+* `node['java']['oracle_rpm']['type']` - Type of java RPM (`jre` or `jdk`), default `jdk`
+* `node['java']['oracle_rpm']['package_version']` - optional, can be set 
+  to pin a version different from the up-to-date one available in the YUM repo,
+  it might be needed to also override the node['java']['java_home'] attribute 
+  to a value consistent with the defined version
+* `node['java']['oracle_rpm']['package_name']` - optional, can be set 
+  to define a package name different from the RPM published by Oracle.
 * `node['java']['accept_license_agreement']` - Indicates that you accept
   the EULA for openjdk package installation.
 * `node['java']['set_default']` - Indicates whether or not you want the
@@ -120,7 +133,7 @@ the necessary attributes (such as java_home) are set.
 ### set_attributes_from_version
 
 Sets default attributes based on the JDK version. This is included by `default.rb`. This logic must be in
-a recipe instead of attributes/default.rb. See [#95](https://github.com/socrata-cookbooks/java/pull/95)
+a recipe instead of attributes/default.rb. See [#95](https://github.com/agileorbit-cookbooks/java/pull/95)
 for details.
 
 ### default_java_symlink
@@ -156,7 +169,7 @@ that cookie to download the oracle recipe on your behalf, however the
 set up a private repository accessible by HTTP.
 
 override the `accept_oracle_download_terms` in, e.g., `roles/base.rb`
-
+```ruby
     default_attributes(
       :java => {
          :oracle => {
@@ -164,6 +177,7 @@ override the `accept_oracle_download_terms` in, e.g., `roles/base.rb`
          }
        }
     )
+```
 
 For both RHEL and Debian families, this recipe pulls the binary
 distribution from the Oracle website, and installs it in the default
@@ -253,20 +267,21 @@ By default, the extracted directory is extracted to
   the `bin` subdirectory of the extracted folder. Will be ignored if this
   `java_ark` is not the default
 - `owner`: owner of extracted directory, set to "root" by default
+- `group`: group of extracted directory, set to `:owner` by default
 - `default`: whether this the default installation of this package,
   boolean true or false
 
 #### Examples
-
-    # install jdk6 from Oracle
-    java_ark "jdk" do
-        url 'http://download.oracle.com/otn-pub/java/jdk/6u29-b11/jdk-6u29-linux-x64.bin'
-        checksum  'a8603fa62045ce2164b26f7c04859cd548ffe0e33bfc979d9fa73df42e3b3365'
-        app_home '/usr/local/java/default'
-        bin_cmds ["java", "javac"]
-        action :install
-    end
-
+```ruby
+# install jdk6 from Oracle
+java_ark "jdk" do
+    url 'http://download.oracle.com/otn-pub/java/jdk/6u29-b11/jdk-6u29-linux-x64.bin'
+    checksum  'a8603fa62045ce2164b26f7c04859cd548ffe0e33bfc979d9fa73df42e3b3365'
+    app_home '/usr/local/java/default'
+    bin_cmds ["java", "javac"]
+    action :install
+end
+```
 ### java_alternatives
 
 The `java_alternatives` LWRP uses `update-alternatives` command
@@ -286,15 +301,45 @@ such as java, javac, etc.
 - `priority`: priority of the alternatives. Integer, defaults to `1061`.
 
 #### Examples
+```ruby
+# set alternatives for java and javac commands
+java_alternatives "set java alternatives" do
+    java_location '/usr/local/java'
+    bin_cmds ["java", "javac"]
+    action :set
+end
+```
 
-    # set alternatives for java and javac commands
-    java_alternatives "set java alternatives" do
-        java_location '/usr/local/java`
-        bin_cmds ["java", "javac"]
-        action :set
-    end
+Production Deployment with Oracle Java
+-----
+Oracle has been known to change the behavior of its download site frequently. It is recommended you store the archives on an artifact server or s3 bucket. You can then override the attributes in a cookbook, role, or environment:
 
-####
+```ruby
+default['java']['jdk_version'] = '7'
+default['java']['install_flavor'] = 'oracle'
+default['java']['jdk']['7']['x86_64']['url'] = 'http://artifactory.example.com/artifacts/jdk-7u65-linux-x64.tar.gz'
+default['java']['oracle']['accept_oracle_download_terms'] = true
+```
+
+Recommendations for inclusion in community cookbooks
+-----
+
+This cookbook is a dependency for many other cookbooks in the Java/Chef sphere. Here are some guidelines for including it into other cookbooks:
+
+### Allow people to not use this cookbook
+Many users manage Java on their own or have systems that already have java installed. Give these users an option to skip this cookbook, for example:
+```ruby
+include_recipe 'java' if node['maven']['install_java']
+```
+
+This would allow a users of the maven cookbook to choose if they want the maven cookbook to install java for them or leave that up to the consumer.
+
+Another good example is from the [Jenkins Cookbook Java recipe](https://github.com/opscode-cookbooks/jenkins/commit/ca2a69d982011dc1bec6a6d0ee4da5c1a1599864).
+
+### Pinning to major version of cookbook and Java
+This cookbook follows semver. It is recommended to pin at the major version of this cookbook when including it in other cookbooks, eg: `depends 'java', '~> 1.0'`
+
+It is acceptable to set the `node['java']['jdk_version']` to a specific version if required for your software to run, eg software xyz requires Java 8 to run. Refrain from pinning to specific patches of the JDK to allow users to consume security updates.
 
 Development
 -----
@@ -303,22 +348,23 @@ This cookbook uses
 [test-kitchen](https://github.com/opscode/test-kitchen) for
 integration tests and
 [ChefSpec/RSpec](https://github.com/sethvargo/chefspec) for unit tests.
-See [TESTING.md](https://github.com/socrata-cookbooks/java/blob/master/TESTING.md) for testing instructions.
+See [TESTING.md](https://github.com/agileorbit-cookbooks/java/blob/master/TESTING.md) for testing instructions.
 
 At this time due to licensing concerns, the IBM recipe is not set up
 in test kitchen. If you would like to test this locally, copy
 .kitchen.yml to .kitchen.local.yml and add the following suite:
-
-    suites:
-    - name: ibm
-      run_list: ["recipe[java]"]
-      attributes:
-        java:
-          install_flavor: "ibm"
-          ibm:
-            accept_ibm_download_terms: true
-            url: "http://jenkins/ibm-java-x86_64-sdk-7.0-4.1.bin"
-            checksum: the-sha256-checksum
+```yml
+suites:
+- name: ibm
+  run_list: ["recipe[java]"]
+  attributes:
+    java:
+      install_flavor: "ibm"
+      ibm:
+        accept_ibm_download_terms: true
+        url: "http://jenkins/ibm-java-x86_64-sdk-7.0-4.1.bin"
+        checksum: the-sha256-checksum
+```
 
 Log into the IBM DeveloperWorks site to download a copy of the IBM
 Java SDK you wish to use/test, host it on an internal HTTP server, and
@@ -330,8 +376,9 @@ License and Author
 * Author: Seth Chisamore (<schisamo@opscode.com>)
 * Author: Bryan W. Berry (<bryan.berry@gmail.com>)
 * Author: Joshua Timberman (<joshua@opscode.com>)
+* Author: Eric Helgeson (<erichelgeson@gmail.com>)
 
-Copyright: 2008-2013, Opscode, Inc
+Copyright: 2014, Agile Orbit, LLC
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

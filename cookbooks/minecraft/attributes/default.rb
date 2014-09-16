@@ -23,16 +23,21 @@ default['minecraft']['install_dir']         = '/srv/minecraft'
 # Currently vanilla, bukkit, spligot
 default['minecraft']['install_type']        = 'vanilla'
 
+default['java']['install_flavor']           = 'default'
+
 case node['minecraft']['install_type']
 when 'vanilla'
-  default['minecraft']['url']                 = 'https://s3.amazonaws.com/Minecraft.Download/versions/1.7.5/minecraft_server.1.7.5.jar'
-  default['minecraft']['checksum']            = 'f8224a78faec7faf0b03c3655c3d04d741c680dd1923853ba15e00cddd807a38'
+  default['minecraft']['url']                 = 'https://s3.amazonaws.com/Minecraft.Download/versions/1.7.10/minecraft_server.1.7.10.jar'
+  default['minecraft']['checksum']            = 'c70870f00c4024d829e154f7e5f4e885b02dd87991726a3308d81f513972f3fc'
+  default['minecraft']['server_opts']         = 'nogui'
 when 'bukkit'
   default['minecraft']['url']                 = 'http://dl.bukkit.org/downloads/craftbukkit/get/02389_1.6.4-R2.0/craftbukkit.jar'
   default['minecraft']['checksum']            = '29c26ec69dcaf8c1214f90f5fa5609fc451aae5fe0d22fd4ce37a505684545b3'
+  default['minecraft']['server_opts']         = '--noconsole --online-mode true'
 when 'spigot'
   default['minecraft']['url']                 = 'http://ci.md-5.net/view/Spigot/job/Spigot/lastStableBuild/artifact/Spigot-Server/target/spigot.jar'
   default['minecraft']['checksum']            = '13abb884cb8f1bc8dfcd110fa3616f03b7ec5e23eb4b2e903b054c0ad23c4ac5'
+  default['minecraft']['server_opts']         = ''
 end
 
 # Defaults to 40% of your total memory.
@@ -48,6 +53,9 @@ default['minecraft']['ops']                 = []
 default['minecraft']['banned-ips']          = []
 default['minecraft']['banned-players']      = []
 default['minecraft']['white-list']          = []
+
+# Stop minecraft from binding to ipv6 by default
+default['minecraft']['prefer_ipv4'] = true
 
 # See the readme for an explanation
 default['minecraft']['autorestart'] = true

@@ -13,6 +13,7 @@ parameter_groups:
 
 - label: Minecraft Settings
   parameters:
+  - terms
   - minecraft_server_port
   - minecraft_gamemode
   - minecraft_spawn_animals
@@ -24,6 +25,7 @@ parameter_groups:
   - server_hostname
   - kitchen
   - chef_version
+  - minecraft_version
 
 parameters:
 
@@ -79,6 +81,17 @@ parameters:
         Must be a valid Rackspace Cloud Server flavor for the region you have
         selected to deploy into.
 
+  terms:
+    label: Agree to Terms
+    description: |
+      Required: You must agree to the Minecraft EULA found here:
+      https://account.mojang.com/documents/minecraft_eula
+    type: boolean
+    constraints:
+    - allowed_values:
+      - true
+      description: Terms must be accepted.
+
   minecraft_server_port:
     label: Minecraft Server Port
     description: Port to run Minecraft server on
@@ -133,6 +146,12 @@ parameters:
       - "true"
       - "false"
 
+  minecraft_version:
+    label: Minecraft Version
+    description: Version of minecraft to install
+    type: string
+    default: 1.8
+
   kitchen:
     label: Kitchen
     description: URL for the kitchen to use
@@ -143,7 +162,7 @@ parameters:
     label: Chef Version
     description: Version of chef client to use
     type: string
-    default: 11.12.8
+    default: 11.16.0
 
 resources:
 
@@ -174,8 +193,13 @@ resources:
       chef_version: { get_param: chef_version }
       node:
         minecraft:
-          url: https://s3.amazonaws.com/Minecraft.Download/versions/1.7.9/minecraft_server.1.7.9.jar
-          checksum: f7b9150d05c2cf8c48541527de310557e6bd9bde73e8ac9479e8ffe722c60a21
+          url:
+            str_replace:
+              template: https://s3.amazonaws.com/Minecraft.Download/versions/%minecraft_version%/minecraft_server.%minecraft_version%.jar
+              params:
+                "%minecraft_version%": { get_param: minecraft_version}
+          checksum: 40e23f3823d6f0e3cbadc491cedb55b8ba53f8ab516b68182ddd1536babeb291
+          accept_eula: { get_param: terms }
           properties:
             server-port: { get_param: minecraft_server_port }
             query.port: { get_param: minecraft_server_port }

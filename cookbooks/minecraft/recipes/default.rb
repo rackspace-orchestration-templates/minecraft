@@ -17,7 +17,7 @@
 # limitations under the License.
 #
 
-include_recipe 'java::default'
+include_recipe "java::#{node['java']['install_flavor']}"
 include_recipe 'runit'
 include_recipe 'minecraft::user'
 
@@ -60,4 +60,11 @@ end
     content node['minecraft'][f].join("\n") + "\n"
     notifies :restart, 'runit_service[minecraft]', :delayed if node['minecraft']['autorestart']
   end
+end
+
+file "#{node['minecraft']['install_dir']}/eula.txt" do
+  content "eula=#{node['minecraft']['accept_eula'].to_s}\n"
+  mode 0644
+  action :create
+  notifies :restart, 'runit_service[minecraft]', :delayed if node['minecraft']['autorestart']
 end

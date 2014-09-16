@@ -25,9 +25,11 @@ when 'runit'
       :install_dir => node['minecraft']['install_dir'],
       :xms         => node['minecraft']['xms'],
       :xmx         => node['minecraft']['xmx'],
+      :prefer_ipv4 => node['minecraft']['prefer_ipv4'],
       :user        => node['minecraft']['user'],
       :group       => node['minecraft']['group'],
       :java_opts   => node['minecraft']['java-options'],
+      :server_opts => node['minecraft']['server_opts'],
       :jar_name    => minecraft_file(node['minecraft']['url'])
     }.merge(params))
     action [:enable, :start]

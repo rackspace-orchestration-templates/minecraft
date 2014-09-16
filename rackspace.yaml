@@ -1,7 +1,7 @@
 schema-version: 1.0.0
 application-family: Miscellaneous
 application-name: Minecraft
-application-version: 1.7.9
+application-version: 1.8
 flavor: Single Linux server
 flavor-weight: 1
 reach-info:
@@ -20,7 +20,7 @@ instructions: |
   The configuration file is in /srv/minecraft.
 
   #### Lock it down
-  This deployment will create a Cloud Server with Minecraft 1.7.9. Once the
+  This deployment will create a Cloud Server with Minecraft 1.8. Once the
   server is online, you should set a white-list in your
   [server.properties](http://minecraft.gamepedia.com/Server.properties)
   file. This will lock down your server to only players you specify.

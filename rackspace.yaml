@@ -2,6 +2,7 @@ schema-version: 1.0.0
 application-family: Miscellaneous
 application-name: Minecraft
 application-version: 1.8
+github-repository-name: minecraft
 flavor: Single Linux server
 flavor-weight: 1
 reach-info:
@@ -18,6 +19,8 @@ instructions: |
   Review the settings for your server to make sure they are in line with the
   game you wish to run. For example, you can set whether or not to allow pvp.
   The configuration file is in /srv/minecraft.
+  Restarting can be completed by running:
+  `/etc/init.d/minecraft restart`
 
   #### Lock it down
   This deployment will create a Cloud Server with Minecraft 1.8. Once the

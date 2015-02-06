@@ -1,8 +1,7 @@
-from fabric.api import env, run, task
-from envassert import detect, file, group, package, port, process, service, \
+from fabric.api import env, task
+from envassert import detect, file, group, port, process, service, \
     user
-from hot.utils.test import get_artifacts, http_check
-
+from hot.utils.test import get_artifacts
 
 
 @task

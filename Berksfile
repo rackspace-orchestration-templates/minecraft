@@ -10,4 +10,4 @@ cookbook 'firewall',
 cookbook 'minecraft',
   :git => 'https://github.com/gregf/cookbook-minecraft'
 cookbook 'rax-firewall',
-  :git => 'https://github.com/brint/rax-firewall-cookbook'
+  :git => 'https://github.com/heat-cookbooks/rax-firewall-cookbook'

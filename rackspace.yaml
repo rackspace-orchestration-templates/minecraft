@@ -35,3 +35,7 @@ instructions: |
   as well as [Windows using
   PuTTY](http://www.rackspace.com/knowledge_center/article/logging-in-with-a-ssh-private-key-on-windows).
 user-input-required: true
+description: |
+  A [Minecraft Multiplayer Server](http://minecraft.gamepedia.com/Setting_up_a_server)
+  running on a single Linux Cloud Server. The default version is
+  1.8 unless otherwise specified.

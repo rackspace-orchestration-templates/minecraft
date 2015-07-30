@@ -11,9 +11,7 @@ reach-info:
 hidden_outputs:
   - private_key
 abstract: |
-  A [Minecraft Multiplayer
-  Server](http://minecraft.gamepedia.com/Setting_up_a_server) running on a
-  single Linux Cloud Server.
+  Minecraft is an open-source sandbox video game written in Java.
 instructions: |
   #### Getting Started
   Review the settings for your server to make sure they are in line with the

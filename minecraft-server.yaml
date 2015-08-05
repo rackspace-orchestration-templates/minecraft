@@ -1,8 +1,9 @@
 heat_template_version: 2013-05-23
 
 description: |
-  This is a Heat template to deploy a single Linux server running a Minecraft
-  server.  The Minecraft server will be setup leveraging Chef solo.
+  A [Minecraft Multiplayer Server](http://minecraft.gamepedia.com/Setting_up_a_server)
+  running on a single Linux Cloud Server. The default version is
+  1.8 unless otherwise specified.
 
 parameter_groups:
 

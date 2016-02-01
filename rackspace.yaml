@@ -1,0 +1,37 @@
+schema-version: 1.0.0
+application-family: Miscellaneous
+application-name: Minecraft
+application-version: 1.8
+github-repository-name: minecraft
+flavor: Single Linux server
+flavor-weight: 1
+reach-info:
+  icon-20x20: https://0b5294b243620310a700-e388a7f3aba385a925111b1fc6f680d4.ssl.cf2.rackcdn.com/minecraft-icon-20x20.png
+  tattoo: https://0b5294b243620310a700-e388a7f3aba385a925111b1fc6f680d4.ssl.cf2.rackcdn.com/minecraft-tattoo.png
+hidden_outputs:
+  - private_key
+abstract: |
+  Minecraft is an open-source sandbox video game written in Java.
+instructions: |
+  #### Getting Started
+  Review the settings for your server to make sure they are in line with the
+  game you wish to run. For example, you can set whether or not to allow pvp.
+  The configuration file is in /home/minecraft/. The server can be restarted
+  by restarting the "minecraft-server" service.
+
+  #### Lock it down
+  This deployment will create a Cloud Server with Minecraft. Once the
+  server is online, you should set a white-list in your
+  [server.properties](http://minecraft.gamepedia.com/Server.properties)
+  file. This will lock down your server to only players you specify.
+
+  #### Logging in via SSH
+  The private key provided in the passwords section can be used to login as
+  root via SSH. We have an article on how to use these keys with [Mac OS X and
+  Linux](http://www.rackspace.com/knowledge_center/article/logging-in-with-a-ssh-private-key-on-linuxmac)
+  as well as [Windows using
+  PuTTY](http://www.rackspace.com/knowledge_center/article/logging-in-with-a-ssh-private-key-on-windows).
+user-input-required: true
+description: |
+  A [Minecraft Multiplayer Server](http://minecraft.gamepedia.com/Setting_up_a_server)
+  running on a single Linux Cloud Server

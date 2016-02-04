@@ -16,12 +16,11 @@ instructions: |
   #### Getting Started
   Review the settings for your server to make sure they are in line with the
   game you wish to run. For example, you can set whether or not to allow pvp.
-  The configuration file is in /srv/minecraft.
-  Restarting can be completed by running:
-  `/etc/init.d/minecraft restart`
+  The configuration file is in /home/minecraft/. The server can be restarted
+  by restarting the "minecraft-server" service.
 
   #### Lock it down
-  This deployment will create a Cloud Server with Minecraft 1.8. Once the
+  This deployment will create a Cloud Server with Minecraft. Once the
   server is online, you should set a white-list in your
   [server.properties](http://minecraft.gamepedia.com/Server.properties)
   file. This will lock down your server to only players you specify.
@@ -35,5 +34,4 @@ instructions: |
 user-input-required: true
 description: |
   A [Minecraft Multiplayer Server](http://minecraft.gamepedia.com/Setting_up_a_server)
-  running on a single Linux Cloud Server. The default version is
-  1.8 unless otherwise specified.
+  running on a single Linux Cloud Server

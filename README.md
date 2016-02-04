@@ -1,9 +1,7 @@
-[![Circle CI](https://circleci.com/gh/rackspace-orchestration-templates/minecraft/tree/master.png?style=shield)](https://circleci.com/gh/rackspace-orchestration-templates/minecraft)
 Description
 ===========
 
-This is a Heat template to deploy a single Linux server running a Minecraft
-server.  The Minecraft server will be setup leveraging Chef solo.
+#### Production
 
 
 Instructions
@@ -12,10 +10,11 @@ Instructions
 #### Getting Started
 Review the settings for your server to make sure they are in line with the
 game you wish to run. For example, you can set whether or not to allow pvp.
-The configuration file is in /srv/minecraft.
+The configuration file is in /home/minecraft/. The server can be restarted
+by restarting the "minecraft-server" service.
 
 #### Lock it down
-This deployment will create a Cloud Server with Minecraft 1.8. Once the
+This deployment will create a Cloud Server with Minecraft. Once the
 server is online, you should set a white-list in your
 [server.properties](http://minecraft.gamepedia.com/Server.properties)
 file. This will lock down your server to only players you specify.
@@ -31,9 +30,10 @@ PuTTY](http://www.rackspace.com/knowledge_center/article/logging-in-with-a-ssh-p
 Requirements
 ============
 * A Heat provider that supports the following:
-  * OS::Heat::ChefSolo
+  * OS::Heat::SoftwareConfig
+  * OS::Heat::SoftwareDeployment
   * OS::Nova::KeyPair
-  * Rackspace::Cloud::Server
+  * OS::Nova::Server
 * An OpenStack username, password, and tenant id.
 * [python-heatclient](https://github.com/openstack/python-heatclient)
 `>= v0.2.8`:
@@ -50,33 +50,23 @@ Parameters
 Parameters can be replaced with your own values when standing up a stack. Use
 the `-P` flag to specify a custom parameter.
 
-* `server_hostname`: Hostname to use for setting the server name. (Default: minecraft)
-* `image`: Server image used for all servers that are created as a part of this
-deployment
- (Default: Ubuntu 14.04 LTS (Trusty Tahr) (PV))
-* `flavor`: Rackspace Cloud Server flavor to use. The size is based on the amount of
-RAM for the provisioned server.
- (Default: 4 GB General Purpose v1)
-* `terms`: Required: You must agree to the Minecraft EULA found here:
-https://account.mojang.com/documents/minecraft_eula
-
-* `minecraft_server_port`: Port to run Minecraft server on (Default: 25565)
-* `minecraft_gamemode`: Mode of gameplay (Default: 0)
-* `minecraft_spawn_animals`: Spawn animals (Default: true)
-* `minecraft_spawn_npcs`: Spawn villagers (Default: true)
-* `minecraft_spawn_monsters`: Spawn monsters (Default: true)
-* `minecraft_version`: Version of minecraft to install (Default: 1.8)
-* `kitchen`: URL for the kitchen to use (Default: https://github.com/rackspace-orchestration-templates/minecraft)
-* `chef_version`: Version of chef client to use (Default: 11.16.0)
+* `minecraft_difficulty`: Difficulty level for Minecraft.  0 - Peaceful, 1 - Easy, 2 - Normal, 3 - Hard (Default: 2)
+* `minecraft_monsters`: Enable or disable spawning of hostile mobs (Default: True)
+* `minecraft_hardcore`: Enable or disable Hardcore mode.  In Hardcore mode, users will be banned from the server upon death (Default: False)
+* `minecraft_animals`: Enable or disable spawning of passive mobs (Default: True)
+* `minecraft_npcs`: Enable or disable spawning of villagers (Default: True)
+* `minecraft_motd`: Message to be displayed in the server list (Default: A Minecraft Server)
+* `minecraft_max_players`: Maximum number of players able to connect at any given time (Default: 20)
+* `minecraft_online`: Online mode requires clients to have a valid Minecraft account. (Default: True)
+* `server_flavor`: Flavor of Cloud Server to use for Minecraft (Default: 4 GB General Purpose v1)
 
 Outputs
 =======
 Once a stack comes online, use `heat output-list` to see all available outputs.
 Use `heat output-show <OUTPUT NAME>` to get the value of a specific output.
 
-* `private_key`: SSH Private Key
-* `server_ip`: Server IP
-* `server_port`: Minecraft Port
+* `minecraft_public_ip`: Server Public IP 
+* `ssh_private_key`: SSH Private Key 
 
 For multi-line values, the response will come in an escaped form. To get rid of
 the escapes, use `echo -e '<STRING>' > file.txt`. For vim users, a substitution

@@ -103,7 +103,7 @@ resources:
       config: |
         #!/bin/bash
         set -e
-        git clone -b 'update-standardization' --single-branch --progress https://github.com/rackspace-orchestration-templates/ansible-roles.git /etc/ansible/roles > $heat_outputs_path.results 2>&1
+        git clone -b 'stable' --single-branch --progress https://github.com/rackspace-orchestration-templates/ansible-roles.git /etc/ansible/roles > $heat_outputs_path.results 2>&1
 
   minecraft_config:
     type: OS::Heat::SoftwareConfig

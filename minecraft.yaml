@@ -90,19 +90,16 @@ parameters:
     constraints:
     - allowed_values:
       - f4bbbce2-50b0-4b07-bf09-96c175a45f4b
-    immutable: true
   ansible_branch:
     type: string
     default: stable
     label: Git Branch or Tag for Ansible Roles
     description: The Ansible Roles will be pulled from Git, using the tag or branch provided
-    immutable: true
   ansible_repo:
     type: string
     default: https://github.com/rackspace-orchestration-templates/ansible-roles.git
     label: Git Repo for Ansible Roles
     description: The Ansible Roles will be pulled from Git, using the repo provided
-    immutable: true
 
 resources:
   #SSH Key

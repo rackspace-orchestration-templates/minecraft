@@ -12,7 +12,11 @@ parameter_groups:
   - minecraft_npcs
   - minecraft_motd
   - minecraft_max_players
-
+- label: rax-dev-params
+  parameters:
+  - server_image
+  - ansible_branch
+  - ansible_repo
 parameters:
   #Minecraft Customization
   minecraft_difficulty:
@@ -77,14 +81,27 @@ parameters:
       - 2 GB General Purpose v1
       - 4 GB General Purpose v1
       - 8 GB General Purpose v1
-#  server_image:
-#    type: string
-#    default: f4bbbce2-50b0-4b07-bf09-96c175a45f4b
-#    label: Server Image
-#    description: Image to use for Minecraft
-#    constraints:
-#    - allowed_values:
-#      - f4bbbce2-50b0-4b07-bf09-96c175a45f4b
+  server_image:
+    type: string
+    default: f4bbbce2-50b0-4b07-bf09-96c175a45f4b
+    label: Server Image
+    description: Image to use for WordPress
+    constraints:
+    - allowed_values:
+      - f4bbbce2-50b0-4b07-bf09-96c175a45f4b
+    immutable: true
+  ansible_branch:
+    type: string
+    default: stable
+    label: Git Branch or Tag for Ansible Roles
+    description: The Ansible Roles will be pulled from Git, using the tag or branch provided
+    immutable: true
+  ansible_repo:
+    type: string
+    default: https://github.com/rackspace-orchestration-templates/ansible-roles.git
+    label: Git Repo for Ansible Roles
+    description: The Ansible Roles will be pulled from Git, using the repo provided
+    immutable: true
 
 resources:
   #SSH Key
@@ -100,10 +117,15 @@ resources:
       group: script
       outputs:
       - name: results
-      config: |
-        #!/bin/bash
-        set -e
-        git clone -b 'stable' --single-branch --progress https://github.com/rackspace-orchestration-templates/ansible-roles.git /etc/ansible/roles > $heat_outputs_path.results 2>&1
+      config:
+        str_replace:
+          template: |
+            #!/bin/bash
+            set -e
+            git clone -b 'tag' --single-branch --progress repository /etc/ansible/roles > $heat_outputs_path.results 2>&1
+          params:
+            tag: { get_param: ansible_branch}
+            repository: { get_param: ansible_repo }
 
   minecraft_config:
     type: OS::Heat::SoftwareConfig
@@ -159,8 +181,7 @@ resources:
     type: OS::Nova::Server
     properties:
       name: { get_param: "OS::stack_name" }
-      #image: { get_param: server_image }
-      image: f4bbbce2-50b0-4b07-bf09-96c175a45f4b
+      image: { get_param: server_image }
       flavor: { get_param: server_flavor }
       key_name: { get_resource: ssh_key }
       software_config_transport: POLL_TEMP_URL

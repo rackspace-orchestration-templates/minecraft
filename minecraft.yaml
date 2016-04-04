@@ -17,6 +17,7 @@ parameter_groups:
   - server_image
   - ansible_branch
   - ansible_repo
+
 parameters:
   #Minecraft Customization
   minecraft_difficulty:

@@ -15,8 +15,7 @@ parameter_groups:
 - label: rax-dev-params
   parameters:
   - server_image
-  - ansible_branch
-  - ansible_repo
+  - ansible_source
 
 parameters:
   #Minecraft Customization
@@ -90,16 +89,12 @@ parameters:
     constraints:
     - allowed_values:
       - f4bbbce2-50b0-4b07-bf09-96c175a45f4b
-  ansible_branch:
+  ansible_source:
     type: string
-    default: stable
-    label: Git Branch or Tag for Ansible Roles
-    description: The Ansible Roles will be pulled from Git, using the tag or branch provided
-  ansible_repo:
-    type: string
-    default: https://github.com/rackspace-orchestration-templates/ansible-roles.git
-    label: Git Repo for Ansible Roles
-    description: The Ansible Roles will be pulled from Git, using the repo provided
+    default: http://catalog.rs-heat.com/ansible-roles/ansible-roles.tar.gz
+    label: Ansible Tarball
+    description: The Ansible Roles will be pulled from the location provided
+    immutable: true
 
 resources:
   #SSH Key
@@ -120,10 +115,11 @@ resources:
           template: |
             #!/bin/bash
             set -e
-            git clone -b 'tag' --single-branch --progress repository /etc/ansible/roles > $heat_outputs_path.results 2>&1
+            mkdir -p /etc/ansible/roles
+            wget ansible_source -O /tmp/ansible-roles.tar.gz 2>&1
+            tar -xf /tmp/ansible-roles.tar.gz --strip-components=1 -C /etc/ansible/roles
           params:
-            tag: { get_param: ansible_branch}
-            repository: { get_param: ansible_repo }
+            ansible_source: { get_param: ansible_source }
 
   minecraft_config:
     type: OS::Heat::SoftwareConfig

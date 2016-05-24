@@ -13,7 +13,7 @@ parameter_groups:
   - minecraft_motd
   - minecraft_max_players
 - label: rax-dev-params
-  parameters:\
+  parameters:
   - ansible_source
 
 parameters:
